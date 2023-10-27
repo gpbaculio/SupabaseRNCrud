@@ -3,6 +3,7 @@ import {createText} from '@shopify/restyle';
 import DynamicView, {DynamicAnimatedView} from './DynamicView';
 import DynamicPressable from './DynamicPressable';
 import DynamicTextInput from './DynamicTextInput';
+import AppContainer from './AppContainer';
 
 import {Theme} from 'theme/theme';
 
@@ -14,4 +15,5 @@ export {
   DynamicAnimatedView,
   DynamicPressable,
   DynamicTextInput,
+  AppContainer,
 };

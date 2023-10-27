@@ -60,12 +60,20 @@ export const colors = {
   platinum: '#D9D9D9',
 };
 
-export const buttonVariants = {
-  defaults: {},
-};
-
 export const containerVariants = {
   defaults: {},
+  rowCenterItems: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  centerItems: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+};
+
+export const buttonVariants = {
+  ...containerVariants,
 };
 
 export const textVariants = {
