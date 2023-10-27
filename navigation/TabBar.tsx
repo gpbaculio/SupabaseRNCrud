@@ -43,7 +43,7 @@ export default function TabBar({
 
   return (
     <DynamicView>
-      <DynamicView flexDirection="row" backgroundColor="white">
+      <DynamicView flexDirection="row" backgroundColor="light">
         <DynamicAnimatedView style={style}>
           <Svg width={width / 3} height="45" viewBox="0 0 209 45" fill="none">
             <Rect x="23" width="163" height="45" rx="16" fill="#FFC244" />

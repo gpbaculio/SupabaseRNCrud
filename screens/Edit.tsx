@@ -5,7 +5,7 @@ import {DynamicView} from 'components';
 
 export default function Edit() {
   return (
-    <DynamicView>
+    <DynamicView backgroundColor="light">
       <Text>Profile</Text>
     </DynamicView>
   );
