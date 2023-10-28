@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {Suspense, useState} from 'react';
 
-import {DynamicTextInput, DynamicView} from 'components';
+import {DynamicText, DynamicTextInput, DynamicView} from 'components';
 import AddButton from './AddButton';
 
-export default function Add() {
+import TodosList from './TodosList';
+
+function Add() {
   const [text, setText] = useState('');
 
   return (
     <DynamicView backgroundColor="light" flex={1} p="L">
-      <DynamicView variant="rowCenterItems">
+      <DynamicView variant="rowCenterItems" mb="L">
         <DynamicTextInput
           p="S"
           placeholder="What needs to be done?"
@@ -22,6 +24,20 @@ export default function Add() {
         />
         <AddButton text={text} setText={setText} />
       </DynamicView>
+      <TodosList />
     </DynamicView>
+  );
+}
+
+export default function () {
+  return (
+    <Suspense
+      fallback={
+        <DynamicView flex={1} variant="centerItems">
+          <DynamicText>Loading...</DynamicText>
+        </DynamicView>
+      }>
+      <Add />
+    </Suspense>
   );
 }
