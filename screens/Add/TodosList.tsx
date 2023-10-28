@@ -20,7 +20,7 @@ export default function TodosList() {
       <DynamicText>{item.text}</DynamicText>
     </DynamicView>
   );
-
+  console.log('data ', data);
   return (
     <FlatList
       contentContainerStyle={styles.contentContainer}

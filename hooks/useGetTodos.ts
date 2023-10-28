@@ -14,9 +14,9 @@ export type Todo = {
 const useGetTodos = () => {
   return useInfiniteQuery<Todo[]>({
     queryKey: [TODOS_QUERY_KEY],
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (_, allPages) => allPages.flat().length / PAGE_COUNT + 1,
-    queryFn: async ({pageParam = 1}) => {
+    queryFn: async ({pageParam = 0}) => {
       const from = (pageParam as number) * PAGE_COUNT;
       const to = from + PAGE_COUNT - 1;
       const {data, error} = await supabase
