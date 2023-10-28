@@ -86,4 +86,5 @@ export const spacing = {
   M: 16,
   L: 20,
   XL: 24,
+  auto: 'auto',
 };

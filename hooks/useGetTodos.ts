@@ -1,4 +1,5 @@
 import {useInfiniteQuery} from '@tanstack/react-query';
+import {useState} from 'react';
 
 import {supabase} from 'supabase';
 
@@ -12,18 +13,34 @@ export type Todo = {
 };
 
 const useGetTodos = () => {
+  const [totalCount, setTotalCount] = useState(0);
+
   return useInfiniteQuery<Todo[]>({
     queryKey: [TODOS_QUERY_KEY],
     initialPageParam: 0,
-    getNextPageParam: (_, allPages) => allPages.flat().length / PAGE_COUNT + 1,
+    refetchInterval: 60000,
+    getNextPageParam: (_, allPages) => {
+      const resultsCount = allPages.flat().length;
+      const offset = resultsCount / PAGE_COUNT;
+
+      if (totalCount >= resultsCount) {
+        return undefined;
+      }
+
+      return Math.floor(offset / PAGE_COUNT) + 1;
+    },
     queryFn: async ({pageParam = 0}) => {
       const from = (pageParam as number) * PAGE_COUNT;
       const to = from + PAGE_COUNT - 1;
-      const {data, error} = await supabase
+      const {data, error, count} = await supabase
         .from(TODOS_QUERY_KEY)
-        .select('*')
+        .select('*', {count: 'exact'})
         .range(from, to)
         .order('created_at', {ascending: false});
+
+      if (count) {
+        setTotalCount(count);
+      }
 
       if (error) {
         throw new Error(error.message);

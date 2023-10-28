@@ -1,12 +1,13 @@
 import React from 'react';
 
-import {useQueryClient} from '@tanstack/react-query';
+import {InfiniteData, useQueryClient} from '@tanstack/react-query';
 import {ToastPosition, toast} from '@backpackapp-io/react-native-toast';
 
 import {DynamicPressable, DynamicText} from 'components';
 
 import {useCreateTodo} from 'hooks';
-import {TODOS_QUERY_KEY} from 'hooks/useGetTodos';
+
+import {TODOS_QUERY_KEY, Todo} from 'hooks/useGetTodos';
 
 type AddButtonProps = {
   text: string;
@@ -20,7 +21,17 @@ export default function AddButton({text, setText}: AddButtonProps) {
 
   const onAddPress = async () => {
     await mutateAsync(text, {
-      onSuccess: () => {
+      onSuccess: data => {
+        if (data.data?.length && data.data[0]) {
+          const newTodo = data.data[0];
+          queryClient.setQueryData<InfiniteData<Array<Todo>>>(
+            [TODOS_QUERY_KEY],
+            oldData => ({
+              ...(oldData as InfiniteData<Todo[]>),
+              pages: [newTodo, ...(oldData?.pages ?? [])] as Array<Todo[]>,
+            }),
+          );
+        }
         toast.success('Successfully added todo', {
           position: ToastPosition.BOTTOM,
           duration: 1500,
@@ -34,9 +45,6 @@ export default function AddButton({text, setText}: AddButtonProps) {
       },
       onSettled: async () => {
         setText('');
-        await queryClient.invalidateQueries({
-          queryKey: [TODOS_QUERY_KEY],
-        });
       },
     });
   };

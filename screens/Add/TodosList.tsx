@@ -1,7 +1,12 @@
-import {FlatList, StyleSheet, ListRenderItem} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  ListRenderItem,
+  ActivityIndicator,
+} from 'react-native';
 import React from 'react';
 
-import {DynamicText, DynamicView} from 'components';
+import {DynamicPressable, DynamicText, DynamicView} from 'components';
 import {useGetTodos} from 'hooks';
 
 import {colors} from 'theme/themeConfig';
@@ -13,22 +18,48 @@ function Separator() {
 }
 
 export default function TodosList() {
-  const {data} = useGetTodos();
+  const {data, fetchNextPage, isFetchingNextPage, hasNextPage} = useGetTodos();
 
   const renderItem: ListRenderItem<Todo> = ({item}) => (
     <DynamicView padding="S" variant="rowCenterItems">
       <DynamicText>{item.text}</DynamicText>
     </DynamicView>
   );
-  console.log('data ', data);
+
+  const renderFooter = () => (
+    <>
+      {isFetchingNextPage ? (
+        <DynamicView pb="S">
+          <ActivityIndicator color={colors.primary} size="large" />
+        </DynamicView>
+      ) : null}
+      {!isFetchingNextPage && hasNextPage ? (
+        <DynamicPressable
+          p="S"
+          mt="S"
+          width="100%"
+          borderRadius={8}
+          backgroundColor="primary"
+          onPress={() => fetchNextPage()}
+          variant="centerItems"
+          position="absolute">
+          <DynamicText>Load More</DynamicText>
+        </DynamicPressable>
+      ) : null}
+    </>
+  );
+
   return (
-    <FlatList
-      contentContainerStyle={styles.contentContainer}
-      data={data?.pages.flat()}
-      keyExtractor={(item, index) => `${item.id}-${index}`}
-      ItemSeparatorComponent={Separator}
-      renderItem={renderItem}
-    />
+    <DynamicView flex={1} flexDirection="column">
+      <FlatList
+        contentContainerStyle={styles.contentContainer}
+        data={data?.pages.flat()}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
+        ItemSeparatorComponent={Separator}
+        renderItem={renderItem}
+        ListFooterComponent={renderFooter}
+      />
+    </DynamicView>
   );
 }
 
