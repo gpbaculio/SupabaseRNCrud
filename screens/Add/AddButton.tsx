@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {InfiniteData, useQueryClient} from '@tanstack/react-query';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {ToastPosition, toast} from '@backpackapp-io/react-native-toast';
 
 import {DynamicPressable, DynamicText} from 'components';
@@ -8,6 +9,7 @@ import {DynamicPressable, DynamicText} from 'components';
 import {useCreateTodo} from 'hooks';
 
 import {TODOS_QUERY_KEY, Todo} from 'hooks/useGetTodos';
+import {colors} from 'theme/themeConfig';
 
 type AddButtonProps = {
   text: string;
@@ -55,16 +57,18 @@ export default function AddButton({text, setText}: AddButtonProps) {
       flex={0.2}
       borderWidth={1}
       borderColor="primary"
-      variant="centerItems"
+      variant="rowCenterItems"
+      justifyContent="center"
       backgroundColor="primary"
       borderTopRightRadius={8}
       borderBottomRightRadius={8}
       disabled={!text || isPending}
       opacity={!text || isPending ? 0.5 : 1}
       onPress={onAddPress}>
-      <DynamicText color="dark" fontFamily="Roboto-Medium">
+      <DynamicText color="dark" fontFamily="Roboto-Medium" mr="XS">
         ADD
       </DynamicText>
+      <FontAwesome name="plus" color={colors.dark} size={14} />
     </DynamicPressable>
   );
 }

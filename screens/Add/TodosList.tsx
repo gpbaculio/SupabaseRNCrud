@@ -6,10 +6,12 @@ import {
 } from 'react-native';
 import React from 'react';
 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import {DynamicPressable, DynamicText, DynamicView} from 'components';
 import {useGetTodos} from 'hooks';
 
-import {colors} from 'theme/themeConfig';
+import {colors, spacing} from 'theme/themeConfig';
 
 import {Todo} from 'hooks/useGetTodos';
 
@@ -21,8 +23,23 @@ export default function TodosList() {
   const {data, fetchNextPage, isFetchingNextPage, hasNextPage} = useGetTodos();
 
   const renderItem: ListRenderItem<Todo> = ({item}) => (
-    <DynamicView padding="S" variant="rowCenterItems">
+    <DynamicView
+      padding="S"
+      variant="rowCenterItems"
+      justifyContent="space-between">
       <DynamicText>{item.text}</DynamicText>
+      <DynamicView
+        variant="rowCenterItems"
+        width="12%"
+        justifyContent="space-between">
+        <FontAwesome
+          name="edit"
+          size={16}
+          color={colors.success}
+          style={styles.trash}
+        />
+        <FontAwesome name="trash" size={16} color={colors.danger} />
+      </DynamicView>
     </DynamicView>
   );
 
@@ -68,5 +85,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: colors.divider,
+  },
+  trash: {
+    marginLeft: spacing.XS,
   },
 });
