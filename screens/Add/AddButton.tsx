@@ -65,10 +65,10 @@ export default function AddButton({text, setText}: AddButtonProps) {
       disabled={!text || isPending}
       opacity={!text || isPending ? 0.5 : 1}
       onPress={onAddPress}>
-      <DynamicText color="dark" fontFamily="Roboto-Medium" mr="XS">
+      <FontAwesome name="plus" color={colors.dark} size={14} />
+      <DynamicText color="dark" fontFamily="Roboto-Medium" ml="XS">
         ADD
       </DynamicText>
-      <FontAwesome name="plus" color={colors.dark} size={14} />
     </DynamicPressable>
   );
 }

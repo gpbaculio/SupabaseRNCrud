@@ -81,6 +81,8 @@ export const textVariants = {
 };
 
 export const spacing = {
+  '2': 2,
+  '4': 4,
   XS: 8,
   S: 12,
   M: 16,

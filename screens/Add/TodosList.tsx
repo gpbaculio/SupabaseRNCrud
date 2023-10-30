@@ -8,10 +8,11 @@ import React from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {DynamicPressable, DynamicText, DynamicView} from 'components';
+import {DynamicText, DynamicView} from 'components';
+
 import {useGetTodos} from 'hooks';
 
-import {colors, spacing} from 'theme/themeConfig';
+import {colors} from 'theme/themeConfig';
 
 import {Todo} from 'hooks/useGetTodos';
 
@@ -28,17 +29,30 @@ export default function TodosList() {
       variant="rowCenterItems"
       justifyContent="space-between">
       <DynamicText>{item.text}</DynamicText>
-      <DynamicView
-        variant="rowCenterItems"
-        width="12%"
-        justifyContent="space-between">
-        <FontAwesome
-          name="edit"
-          size={16}
-          color={colors.success}
-          style={styles.trash}
-        />
-        <FontAwesome name="trash" size={16} color={colors.danger} />
+      <DynamicView variant="rowCenterItems" justifyContent="space-between">
+        <DynamicView
+          variant="rowCenterItems"
+          borderColor="divider"
+          borderWidth={1}
+          py="4"
+          px="4"
+          borderRadius={4}
+          mr="XS"
+          backgroundColor="smokyBlack">
+          <FontAwesome name="edit" size={16} color={colors.success} />
+          <DynamicText ml="4">Edit</DynamicText>
+        </DynamicView>
+        <DynamicView
+          variant="rowCenterItems"
+          borderColor="divider"
+          borderWidth={1}
+          py="4"
+          px="4"
+          borderRadius={4}
+          backgroundColor="smokyBlack">
+          <FontAwesome name="trash" size={16} color={colors.danger} />
+          <DynamicText ml="4">Delete</DynamicText>
+        </DynamicView>
       </DynamicView>
     </DynamicView>
   );
@@ -49,19 +63,6 @@ export default function TodosList() {
         <DynamicView pb="S">
           <ActivityIndicator color={colors.primary} size="large" />
         </DynamicView>
-      ) : null}
-      {!isFetchingNextPage && hasNextPage ? (
-        <DynamicPressable
-          p="S"
-          mt="S"
-          width="100%"
-          borderRadius={8}
-          backgroundColor="primary"
-          onPress={() => fetchNextPage()}
-          variant="centerItems"
-          position="absolute">
-          <DynamicText>Load More</DynamicText>
-        </DynamicPressable>
       ) : null}
     </>
   );
@@ -75,6 +76,11 @@ export default function TodosList() {
         ItemSeparatorComponent={Separator}
         renderItem={renderItem}
         ListFooterComponent={renderFooter}
+        onEndReached={() => {
+          if (!isFetchingNextPage && hasNextPage) {
+            fetchNextPage();
+          }
+        }}
       />
     </DynamicView>
   );
@@ -85,8 +91,5 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: colors.divider,
-  },
-  trash: {
-    marginLeft: spacing.XS,
   },
 });
