@@ -4,7 +4,9 @@ import {useState} from 'react';
 import {supabase} from 'supabase';
 
 export const TODOS_QUERY_KEY = 'todos';
+
 const PAGE_COUNT = 10;
+
 export type Todo = {
   created_at: string;
   id: string;
