@@ -35,7 +35,7 @@ function useGetTodos() {
     queryFn: async ({pageParam = 0}) => {
       const from = (pageParam as number) * PAGE_COUNT;
       const to = from + PAGE_COUNT - 1;
-      console.log('from', from);
+
       const {data, error, count} = await supabase
         .from(TODOS_QUERY_KEY)
         .select('*', {count: 'exact'})
