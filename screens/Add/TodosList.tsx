@@ -52,6 +52,7 @@ export default function TodosList() {
         renderItem={renderItem}
         ListFooterComponent={renderFooter}
         onEndReached={onEndReached}
+        onEndReachedThreshold={0.5}
       />
     </DynamicView>
   );

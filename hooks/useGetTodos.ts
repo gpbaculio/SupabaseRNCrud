@@ -14,26 +14,28 @@ export type Todo = {
   updated_at: string;
 };
 
-const useGetTodos = () => {
+function useGetTodos() {
   const [totalCount, setTotalCount] = useState(0);
 
   return useInfiniteQuery<Todo[]>({
     queryKey: [TODOS_QUERY_KEY],
     initialPageParam: 0,
-    refetchInterval: 60000,
+    refetchInterval: 10000,
     getNextPageParam: (_, allPages) => {
       const resultsCount = allPages.flat().length;
-      const offset = resultsCount / PAGE_COUNT;
 
-      if (totalCount >= resultsCount) {
+      if (totalCount && resultsCount >= totalCount) {
         return undefined;
       }
 
-      return Math.floor(offset / PAGE_COUNT) + 1;
+      const currentPage = Math.ceil(resultsCount / PAGE_COUNT);
+
+      return currentPage;
     },
     queryFn: async ({pageParam = 0}) => {
       const from = (pageParam as number) * PAGE_COUNT;
       const to = from + PAGE_COUNT - 1;
+      console.log('from', from);
       const {data, error, count} = await supabase
         .from(TODOS_QUERY_KEY)
         .select('*', {count: 'exact'})
@@ -51,6 +53,6 @@ const useGetTodos = () => {
       return data;
     },
   });
-};
+}
 
 export default useGetTodos;
