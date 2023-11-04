@@ -14,7 +14,7 @@ function Add() {
   );
 }
 
-export default function () {
+export default function AddRoot() {
   return (
     <Suspense
       fallback={

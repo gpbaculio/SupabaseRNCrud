@@ -116,7 +116,7 @@ export default function TodoItem({item}: TodoProps) {
         <DynamicText>{text}</DynamicText>
         <DynamicView variant="rowCenterItems" justifyContent="space-between">
           <EditButton onPress={onEdit} />
-          <DeleteButton />
+          <DeleteButton item={item} />
         </DynamicView>
       </DynamicView>
     </>
