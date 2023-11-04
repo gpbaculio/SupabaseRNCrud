@@ -21,10 +21,14 @@ function useGetTodos() {
     queryKey: [TODOS_QUERY_KEY],
     initialPageParam: 0,
     refetchInterval: 10000,
-    getNextPageParam: (_, allPages) => {
+    getNextPageParam: (_, allPages, lastPage) => {
       const resultsCount = allPages.flat().length;
+      const from = (lastPage as number) * PAGE_COUNT;
 
-      if (totalCount && resultsCount >= totalCount) {
+      if (
+        (totalCount && resultsCount >= totalCount) ||
+        (totalCount && from >= totalCount)
+      ) {
         return undefined;
       }
 
@@ -47,7 +51,7 @@ function useGetTodos() {
       }
 
       if (error) {
-        throw new Error(error.message);
+        return [];
       }
 
       return data;

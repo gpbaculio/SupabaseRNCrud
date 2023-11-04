@@ -28,10 +28,22 @@ export default function AddButton({text, setText}: AddButtonProps) {
           const newTodo = data.data[0];
           queryClient.setQueryData<InfiniteData<Array<Todo>>>(
             [TODOS_QUERY_KEY],
-            oldData => ({
-              ...(oldData as InfiniteData<Todo[]>),
-              pages: [newTodo, ...(oldData?.pages ?? [])] as Array<Todo[]>,
-            }),
+            oldData => {
+              const pages = oldData?.pages?.map((page, index) => {
+                if (index === 0) {
+                  // Insert the new todo at the beginning of the first page
+                  return [newTodo, ...page];
+                } else {
+                  // Leave the other pages unchanged
+                  return page;
+                }
+              }) as Array<Todo[]>;
+
+              return {
+                ...(oldData as InfiniteData<Todo[]>),
+                pages,
+              };
+            },
           );
         }
         toast.success('Successfully added todo', {
@@ -54,6 +66,7 @@ export default function AddButton({text, setText}: AddButtonProps) {
   return (
     <DynamicPressable
       p="S"
+      height="100%"
       flex={0.2}
       borderWidth={1}
       borderColor="primary"
